@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragments :: head"></head>
+	<body>
+		<nav th:replace="fragments :: navbar"></nav>
+		<div>
+			<h3>Expense added</h3>
+			<p>Name: <span th:text="${expense.name}"></span></p>
+			<p>Type: <span th:text="${expense.type}"></span></p>
+			<p>Amount: <span th:text="${expense.amount}"></span> kn</p>
+			<a class="btn btn-primary" th:href="@{/new}">Add new expense</a>
+		</div>
+	</body>
+</html>

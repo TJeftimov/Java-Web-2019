@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+    <div class="row">
+        <h1 class="col-sm-4 offset-sm-4 text-center">MoneySaver</h1>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-4 offset-sm-4 text-center">
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    <label>Username: </label>
+                    <input type="text" name="username">
+                </div>
+
+                <div class="form-group">
+                    <label>Password: </label>
+                    <input type="password" name="password">
+                </div>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-primary" value="Login">
+            </form>
+        </div>
+        <div class="col-sm-4 offset-sm-4 text-center">
+            <a class="btn btn-primary" th:href="@{/signup}">Signup</a>
+        </div>
+    </div>
+</body>
+</html>
