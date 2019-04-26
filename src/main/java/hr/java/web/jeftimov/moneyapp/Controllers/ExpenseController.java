@@ -1,11 +1,8 @@
 package hr.java.web.jeftimov.moneyapp.Controllers;
 
 import hr.java.web.jeftimov.moneyapp.Entities.Expense;
-import hr.java.web.jeftimov.moneyapp.Entities.User;
 import hr.java.web.jeftimov.moneyapp.Entities.Wallet;
-import hr.java.web.jeftimov.moneyapp.Repositories.JdbcExpenseRepository;
-import hr.java.web.jeftimov.moneyapp.Repositories.JdbcUserRepository;
-import hr.java.web.jeftimov.moneyapp.Repositories.JdbcWalletRepository;
+import hr.java.web.jeftimov.moneyapp.Repositories.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
@@ -23,16 +20,16 @@ import java.util.ArrayList;
 @SessionAttributes({"expenseTypes", "wallet"})
 public class ExpenseController {
 
-	JdbcExpenseRepository jdbcExpenseRepository;
-	JdbcWalletRepository jdbcWalletRepository;
-	public ExpenseController(JdbcExpenseRepository jdbcExpenseRepository, JdbcWalletRepository jdbcWalletRepository) {
-		this.jdbcExpenseRepository = jdbcExpenseRepository;
-		this.jdbcWalletRepository = jdbcWalletRepository;
+	HibernateExpenseRepository hibernateExpenseRepository;
+	HibernateWalletRepository hibernateWalletRepository;
+	public ExpenseController(HibernateWalletRepository hibernateWalletRepository, HibernateExpenseRepository hibernateExpenseRepository) {
+		this.hibernateExpenseRepository = hibernateExpenseRepository;
+		this.hibernateWalletRepository = hibernateWalletRepository;
 	}
 
 	@ModelAttribute("wallet")
 	public Wallet createWallet(Authentication authentication) {
-		return jdbcWalletRepository.findUsersWallet(authentication.getName());
+		return hibernateWalletRepository.findUsersWallet(authentication.getName());
 	}
 	
 	@GetMapping("/home")
@@ -56,11 +53,11 @@ public class ExpenseController {
 			return "newExpense";
 		}
 
-		jdbcExpenseRepository.save(expense, wallet.getId());
+		hibernateExpenseRepository.save(expense, wallet);
+		wallet.getExpenseList().add(expense);
 
 		log.info("Passing form result and adding expense to wallet");
 		model.addAttribute("expense", expense);
-		wallet.setExpenseList(new ArrayList<>(jdbcExpenseRepository.getExpensesList(wallet)));
 
 		log.info("Passing sum of expenses in wallet");
 		model.addAttribute("sumOfExpenses", wallet.sumOfExpenses());

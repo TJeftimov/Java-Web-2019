@@ -8,6 +8,5 @@ import java.util.List;
 public interface ExpenseRepository {
     List<Expense> findAll();
     Expense findOne(Long id);
-    Expense save(Expense expense, Long walletId);
-    List<Expense> getExpensesList(Wallet wallet);
+    Expense save(Expense expense, Wallet wallet);
 }

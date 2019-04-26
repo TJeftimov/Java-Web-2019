@@ -4,21 +4,32 @@ import hr.java.web.jeftimov.moneyapp.Entities.Expense;
 import lombok.Data;
 
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
-public class Wallet {
+@Entity
+@Table(name="wallets")
+public class Wallet implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String walletName;
 
-    private ArrayList<Expense> expenseList;
+    @OneToMany(mappedBy = "wallet", fetch = FetchType.EAGER)
+    private List<Expense> expenseList;
 
+    @Enumerated(EnumType.STRING)
     private WalletType walletType;
 
     private LocalDateTime createDate;
+
+    private String userName;
 
     public enum WalletType {
         LEATHER,
