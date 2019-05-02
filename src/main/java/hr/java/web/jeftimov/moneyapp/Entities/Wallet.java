@@ -1,5 +1,6 @@
 package hr.java.web.jeftimov.moneyapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hr.java.web.jeftimov.moneyapp.Entities.Expense;
 import lombok.Data;
 
@@ -16,7 +17,8 @@ import java.util.List;
 public class Wallet implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     private String walletName;
@@ -27,6 +29,7 @@ public class Wallet implements Serializable {
     @Enumerated(EnumType.STRING)
     private WalletType walletType;
 
+    @JsonIgnore
     private LocalDateTime createDate;
 
     private String userName;

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Primary
@@ -33,20 +35,38 @@ public class HibernateWalletRepository implements WalletRepository {
     }
 
     @Override
+    public Wallet findOne(Long id) {
+        return em.find(Wallet.class, id);
+    }
+
+    @Override
     public List<Wallet> findAll() {
         Session session = (Session) em.getDelegate();
         return session.createQuery("SELECT w FROM Wallet w", Wallet.class).getResultList();
     }
 
     @Override
-    public void updateWallet(Wallet wallet) {
+    public Wallet save(Wallet wallet) {
+        wallet.setCreateDate(LocalDateTime.now());
+
         Session session = (Session) em.getDelegate();
-        session.update(wallet);
+        Serializable id = session.save(wallet);
+
+        wallet.setId((Long) id);
+
+        return wallet;
     }
 
     @Override
-    public void deleteWallet(Long walletId) {
+    public Wallet update(Wallet wallet) {
+        Session session = (Session) em.getDelegate();
+        return (Wallet) session.merge(wallet);
+    }
 
+    @Override
+    public void delete(Long walletId) {
+        Wallet wallet = em.find(Wallet.class, walletId);
+        em.remove(wallet);
     }
 
 }

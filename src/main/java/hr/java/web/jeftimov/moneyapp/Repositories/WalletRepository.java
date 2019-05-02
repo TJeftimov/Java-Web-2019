@@ -8,6 +8,8 @@ import java.util.List;
 public interface WalletRepository {
     Wallet findUsersWallet(String userName);
     List<Wallet> findAll();
-    void updateWallet(Wallet wallet);
-    void deleteWallet(Long walletId);
+    Wallet findOne(Long id);
+    Wallet save(Wallet wallet);
+    Wallet update(Wallet wallet);
+    void delete(Long walletId);
 }

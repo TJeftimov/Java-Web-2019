@@ -1,5 +1,6 @@
 package hr.java.web.jeftimov.moneyapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class Expense implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 
 	@NotEmpty(message = "You must enter a name!")
@@ -33,10 +35,12 @@ public class Expense implements Serializable {
 	@NotNull(message = "You must select and expense type!")
 	private Type type;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="walletId")
 	private Wallet wallet;
 
+	@JsonIgnore
 	private LocalDateTime createDate;
 	
 	public enum Type {
@@ -44,5 +48,5 @@ public class Expense implements Serializable {
 		RENT,
 		FUEL,
 		ENTERTAINMENT
-	};
+	}
 }

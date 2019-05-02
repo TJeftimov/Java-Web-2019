@@ -9,4 +9,6 @@ public interface ExpenseRepository {
     List<Expense> findAll();
     Expense findOne(Long id);
     Expense save(Expense expense, Wallet wallet);
+    Expense update(Expense expense);
+    void delete(Long id);
 }

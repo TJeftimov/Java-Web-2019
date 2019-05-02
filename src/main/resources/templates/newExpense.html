@@ -27,7 +27,7 @@
 				
 				<div class="form-group">
 					<label for="amount">Amount: </label>
-					<input type="number" th:field="*{amount}" id="amount" class="form-control">
+					<input type="number" th:field="*{amount}" id="amount" class="form-control" step=".01">
 					<span class="validation-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
 				</div>
 				<input type="submit" class="btn btn-primary" value="Add expense">

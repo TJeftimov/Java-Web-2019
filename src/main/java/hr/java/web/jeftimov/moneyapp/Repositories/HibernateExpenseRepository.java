@@ -49,4 +49,16 @@ public class HibernateExpenseRepository implements ExpenseRepository {
 
         return expense;
     }
+
+    @Override
+    public Expense update(Expense expense) {
+        Session session = (Session) em.getDelegate();
+        return (Expense) session.merge(expense);
+    }
+
+    @Override
+    public void delete(Long id) {
+        Expense expense = em.find(Expense.class, id);
+        em.remove(expense);
+    }
 }
