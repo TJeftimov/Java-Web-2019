@@ -32,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/api/**", "/h2-console/**", "/login", "/logout")
+        http.headers().frameOptions().disable()
+            .and()
+            .csrf().ignoringAntMatchers("/api/**", "/h2-console/**", "/login", "/logout")
             .and()
             .authorizeRequests()
             .antMatchers("/expenses/about").permitAll()

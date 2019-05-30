@@ -1,3 +1,5 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
 create table if not exists users (
  id bigint primary key auto_increment,
  username varchar(20) not null unique ,

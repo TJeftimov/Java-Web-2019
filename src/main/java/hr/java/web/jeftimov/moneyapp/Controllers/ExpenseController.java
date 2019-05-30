@@ -20,16 +20,18 @@ import java.time.LocalDateTime;
 @SessionAttributes({"expenseTypes", "wallet"})
 public class ExpenseController {
 
-	HibernateExpenseRepository hibernateExpenseRepository;
-	HibernateWalletRepository hibernateWalletRepository;
-	public ExpenseController(HibernateWalletRepository hibernateWalletRepository, HibernateExpenseRepository hibernateExpenseRepository) {
-		this.hibernateExpenseRepository = hibernateExpenseRepository;
-		this.hibernateWalletRepository = hibernateWalletRepository;
+	private final ExpenseRepository expenseRepository;
+	private final WalletRepository walletRepository;
+
+	public ExpenseController(ExpenseRepository expenseRepository, WalletRepository walletRepository) {
+		this.expenseRepository = expenseRepository;
+		this.walletRepository = walletRepository;
 	}
 
 	@ModelAttribute("wallet")
 	public Wallet createWallet(Authentication authentication) {
-		return hibernateWalletRepository.findUsersWallet(authentication.getName());
+		// return hibernateWalletRepository.findUsersWallet(authentication.getName());
+		return walletRepository.findByUsernameEquals(authentication.getName());
 	}
 	
 	@GetMapping("/home")
@@ -53,7 +55,10 @@ public class ExpenseController {
 			return "newExpense";
 		}
 
-		hibernateExpenseRepository.save(expense, wallet);
+		expense.setWallet(wallet);
+		expense.setCreatedate(LocalDateTime.now());
+		expenseRepository.save(expense);
+		// hibernateExpenseRepository.save(expense, wallet);
 		wallet.getExpenseList().add(expense);
 
 		log.info("Passing form result and adding expense to wallet");

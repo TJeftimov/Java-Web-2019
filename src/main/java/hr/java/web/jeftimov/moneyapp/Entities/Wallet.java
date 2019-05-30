@@ -21,18 +21,17 @@ public class Wallet implements Serializable {
     @JsonIgnore
     private Long id;
 
-    private String walletName;
+    private String walletname;
 
     @OneToMany(mappedBy = "wallet", fetch = FetchType.EAGER)
     private List<Expense> expenseList;
 
     @Enumerated(EnumType.STRING)
-    private WalletType walletType;
+    private WalletType wallettype;
 
-    @JsonIgnore
-    private LocalDateTime createDate;
+    private LocalDateTime createdate;
 
-    private String userName;
+    private String username;
 
     public enum WalletType {
         LEATHER,

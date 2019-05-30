@@ -2,8 +2,8 @@ package hr.java.web.jeftimov.moneyapp.Controllers;
 
 import hr.java.web.jeftimov.moneyapp.Entities.Expense;
 import hr.java.web.jeftimov.moneyapp.Entities.Wallet;
-import hr.java.web.jeftimov.moneyapp.Repositories.HibernateExpenseRepository;
-import hr.java.web.jeftimov.moneyapp.Repositories.HibernateWalletRepository;
+import hr.java.web.jeftimov.moneyapp.Repositories.ExpenseRepository;
+import hr.java.web.jeftimov.moneyapp.Repositories.WalletRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class ExpenseRestController {
 
-    private final HibernateExpenseRepository expenseRepository;
-    private final HibernateWalletRepository walletRepository;
+    private final ExpenseRepository expenseRepository;
+    private final WalletRepository walletRepository;
 
-    public ExpenseRestController(HibernateExpenseRepository expenseRepository, HibernateWalletRepository walletRepository) {
+    public ExpenseRestController(ExpenseRepository expenseRepository, WalletRepository walletRepository) {
         this.expenseRepository = expenseRepository;
         this.walletRepository = walletRepository;
     }
@@ -28,7 +28,7 @@ public class ExpenseRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Expense> findOne(@PathVariable Long id) {
-        Expense expense = expenseRepository.findOne(id);
+        Expense expense = expenseRepository.findById(id).get();
 
         if(expense != null) {
             return new ResponseEntity<>(expense, HttpStatus.OK);
@@ -40,22 +40,23 @@ public class ExpenseRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(consumes="application/json")
     public Expense save(@RequestBody Expense expense, @RequestParam Long walletId) {
-        Wallet wallet = walletRepository.findOne(walletId);
-        return expenseRepository.save(expense, wallet);
+        Wallet wallet = walletRepository.findById(walletId).get();
+        expense.setWallet(wallet);
+        return expenseRepository.save(expense);
     }
 
     @PutMapping("/{id}")
     public Expense update(@PathVariable Long id, @RequestBody Expense expense) {
-        Expense exp = expenseRepository.findOne(id);
-        expense.setCreateDate(exp.getCreateDate());
+        Expense exp = expenseRepository.findById(id).get();
+        expense.setCreatedate(exp.getCreatedate());
         expense.setWallet(exp.getWallet());
         expense.setId(id);
-        return expenseRepository.update(expense);
+        return expenseRepository.save(expense);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        expenseRepository.delete(id);
+        expenseRepository.delete(expenseRepository.findById(id).get());
     }
 }

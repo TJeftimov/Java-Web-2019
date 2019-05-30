@@ -37,11 +37,11 @@ public class Expense implements Serializable {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="walletId")
+	@JoinColumn(name="walletid")
 	private Wallet wallet;
 
 	@JsonIgnore
-	private LocalDateTime createDate;
+	private LocalDateTime createdate;
 	
 	public enum Type {
 		FOOD,

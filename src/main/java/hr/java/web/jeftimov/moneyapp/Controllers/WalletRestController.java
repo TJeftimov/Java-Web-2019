@@ -1,7 +1,7 @@
 package hr.java.web.jeftimov.moneyapp.Controllers;
 
 import hr.java.web.jeftimov.moneyapp.Entities.Wallet;
-import hr.java.web.jeftimov.moneyapp.Repositories.HibernateWalletRepository;
+import hr.java.web.jeftimov.moneyapp.Repositories.WalletRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class WalletRestController {
 
-    private final HibernateWalletRepository walletRepository;
+    private final WalletRepository walletRepository;
 
-    public WalletRestController(HibernateWalletRepository walletRepository) {
+    public WalletRestController(WalletRepository walletRepository) {
         this.walletRepository = walletRepository;
     }
 
@@ -24,7 +24,7 @@ public class WalletRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Wallet> findOne(@PathVariable Long id) {
-        Wallet wallet = walletRepository.findOne(id);
+        Wallet wallet = walletRepository.findById(id).get();
 
         if(wallet != null) {
             return new ResponseEntity<>(wallet, HttpStatus.OK);
@@ -41,16 +41,16 @@ public class WalletRestController {
 
     @PutMapping("/{id}")
     public Wallet update(@PathVariable Long id, @RequestBody Wallet wallet) {
-        Wallet wlt = walletRepository.findOne(id);
-        wallet.setCreateDate(wlt.getCreateDate());
+        Wallet wlt = walletRepository.findById(id).get();
+        wallet.setCreatedate(wlt.getCreatedate());
         wallet.setExpenseList(wlt.getExpenseList());
         wallet.setId(id);
-        return walletRepository.update(wallet);
+        return walletRepository.save(wallet);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        walletRepository.delete(id);
+        walletRepository.delete(walletRepository.findById(id).get());
     }
 }
