@@ -4,8 +4,8 @@
 <body>
 <nav th:replace="fragments :: navbar"></nav>
 <div class="row">
-    <h1 class="col-sm-4 offset-sm-4 text-center">MoneySaver</h1>
-    <p class="col-sm-4 offset-sm-4 text-center">About page</p>
+    <h1 class="col-sm-4 offset-sm-4 text-center" th:text="#{msg.lang.title}">MoneySaver</h1>
+    <p class="col-sm-4 offset-sm-4 text-center" th:text="#{msg.lang.about}">About page</p>
 </div>
 </body>
 </html>

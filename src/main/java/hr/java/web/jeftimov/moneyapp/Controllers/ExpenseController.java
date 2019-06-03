@@ -71,7 +71,8 @@ public class ExpenseController {
 	}
 
 	@GetMapping("/resetWallet")
-	public String resetWallet(SessionStatus status){
+	public String resetWallet(SessionStatus status, Wallet wallet){
+		expenseRepository.deleteAll(expenseRepository.findByWallet(wallet));
 		log.info("Clearing wallet");
 		status.setComplete();
 		return "redirect:/expenses/new";

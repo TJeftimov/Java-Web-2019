@@ -23,16 +23,16 @@ public class Expense implements Serializable {
 	@JsonIgnore
 	private Long id;
 
-	@NotEmpty(message = "You must enter a name!")
-	@Size(min = 3, max = 20, message = "Name must be between 5 and 20 characters!")
+	@NotEmpty(message = "{msg.lang.nameNotEmpty}")
+	@Size(min = 3, max = 20, message = "{msg.lang.nameLength}")
 	private String name;
 
-	@NotNull(message = "You must enter an amount!")
-	@DecimalMin(value = "10", message = "Amount must be at least 10")
+	@NotNull(message = "{msg.lang.amountNotNull}")
+	@DecimalMin(value = "10", message = "{msg.lang.amountSize}")
 	private Double amount;
 
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "You must select and expense type!")
+	@NotNull(message = "{msg.lang.typeNotNull}")
 	private Type type;
 
 	@JsonIgnore

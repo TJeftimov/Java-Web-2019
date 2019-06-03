@@ -5,18 +5,18 @@
 		<nav th:replace="fragments :: navbar"></nav>
 		<div class="row">
 			<div class="col-sm-4 offset-sm-4 text-center">
-				<h3>Expense added</h3>
-				<p>Name: <span th:text="${expense.name}"></span></p>
-				<p>Type: <span th:text="${expense.type}"></span></p>
-				<p>Amount: <span th:text="${expense.amount}"></span> kn</p>
-				<a class="btn btn-primary" th:href="@{/expenses/new}">Add new expense</a>
+				<h3 th:text="#{msg.lang.expenseAdded}">Expense added</h3>
+				<p><span th:text="#{msg.lang.name}">Name: </span><span th:text="${expense.name}"></span></p>
+				<p><span th:text="#{msg.lang.type}">Type: </span><span th:text="${expense.type}"></span></p>
+				<p><span th:text="#{msg.lang.amount}">Amount: </span><span th:text="${expense.amount}"> kn</span></p>
+				<a class="btn btn-primary" th:href="@{/expenses/new}" th:text="#{msg.lang.addNewExpense}">Add new expense</a>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-4 offset-sm-4 text-center">
-				<h3>Sum of expenses in wallet</h3>
+				<h3 th:text="#{msg.lang.expensesSum}">Sum of expenses in wallet</h3>
 				<p th:text="${sumOfExpenses}"></p>
-				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{/expenses/resetWallet}">Clear wallet</a>
+				<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{/expenses/resetWallet}" th:text="#{msg.lang.clearWallet}">Clear wallet</a>
 			</div>
 		</div>
 		<div th:replace="fragments :: footer"></div>

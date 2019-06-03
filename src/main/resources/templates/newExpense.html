@@ -4,18 +4,18 @@
 	<body>
 		<nav th:replace="fragments :: navbar"></nav>
 		<div class="expense-form">
-			<h2>Add new expense</h2>
+			<h2 th:text="#{msg.lang.newExpenseTitle}">Add new expense</h2>
 			<form method="POST" th:object="${expense}">
 				<div class="form-group">
-					<label for="name">Name: </label>
+					<label for="name" th:text="#{msg.lang.name}">Name: </label>
 					<input type="text" th:field="*{name}" id="name" class="form-control">
 					<span class="validation-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 				</div>
 				
 				<div class="form-group">
-					<label for="type">Type: </label>
+					<label for="type" th:text="#{msg.lang.type}">Type: </label>
 					<select th:field="*{type}" id="type" class="form-control">
-						<option value="" >---Choose type---</option>
+						<option value="" th:text="#{msg.lang.chooseType}">---Choose type---</option>
 						<option 
 							th:each="expenseType : ${expenseTypes}"
 							th:value="${expenseType}"
@@ -26,11 +26,11 @@
 				</div>
 				
 				<div class="form-group">
-					<label for="amount">Amount: </label>
+					<label for="amount" th:text="#{msg.lang.amount}">Amount: </label>
 					<input type="number" th:field="*{amount}" id="amount" class="form-control" step=".01">
 					<span class="validation-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
 				</div>
-				<input type="submit" class="btn btn-primary" value="Add expense">
+				<input type="submit" class="btn btn-primary" th:value="#{msg.lang.addExpense}">
 				<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 			</form>
 		</div>

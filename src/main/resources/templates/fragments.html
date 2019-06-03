@@ -7,34 +7,53 @@
 		<title>MoneySaver</title>
 		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" >
 		<link href="../static/css/bootstrap.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 	</head>
 	
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="navbar">
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" th:href="@{/expenses/home}">MoneySaver</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" th:href="@{/expenses/new}">New expense</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" th:href="@{/expenses/about}">About</a>
-			</li>
-		</ul>
+		<a class="navbar-brand" th:href="@{/expenses/home}">MoneySaver</a>
+		<div class="collapse navbar-collapse">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/expenses/new}" th:text="#{msg.lang.newExpenseLink}">New expense</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/expenses/about}" th:text="#{msg.lang.aboutLink}">About</a>
+				</li>
+			</ul>
+			<select id="locales" class="my-2 my-lg-0">
+				<option value="hr"
+						th:selected="${#locale.language == 'hr'}"
+						th:text="#{msg.lang.hr}"></option>
+				<option value="en"
+						th:selected="${#locale.language == 'en'}"
+						th:text="#{msg.lang.en}"></option>
+			</select>
+		</div>
 	</nav>
 
 	<div th:fragment="footer" class="user-logout">
 		<div class="row" sec:authorize="isAuthenticated()">
 			<div class="col-sm-4 offset-sm-4 text-center">
-				<span>Logged in as: <span sec:authentication="name"></span></span>
+				<span th:text="#{msg.lang.loggedIn}">Logged in as: </span><span sec:authentication="name"></span>
 			</div>
 			<div class="col-sm-4 text-center">
 				<form method="POST" action="/logout">
 					<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-					<button class="btn btn-primary" type="submit">Logout</button>
+					<button class="btn btn-primary" type="submit" th:text="#{msg.lang.logout}">Logout</button>
 				</form>
 			</div>
 		</div>
+		<script>
+			$(document).ready(function() {
+				$("#locales").change(function () {
+					var selectedOption = $('#locales').val();
+					if (selectedOption != '') {
+						window.location.replace('?language=' + selectedOption);
+					}
+				});
+			});
+		</script>
 	</div>
 
 </body>
